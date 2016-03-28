@@ -4,11 +4,11 @@
 
 To get started
 
-{% highlight java %}
+```java
 String xbrlInstance = "http://www.sec.gov/Archives/edgar/data/7623/000143774915001434/artw-20141130.xml";
 final LocalFileCache fileCache = new LocalFileCache("schemas");
 XbrlFinancialStatementTask task = new XbrlFinancialStatementTask(fileCache, xbrlInstance);
 task.runTask();
-{% endhighlight %}
+```
 
 Where xbrlInstance is the URL to a XBRL instance document.
