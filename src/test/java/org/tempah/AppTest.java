@@ -1,5 +1,7 @@
 package org.tempeh;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
@@ -18,14 +20,13 @@ import org.tempeh.cache.LocalFileCache;
 public class AppTest {
 
     private static final Logger logger = LogManager.getLogger(AppTest.class);
-    private String xbrl;
+    private static FileInputStream xbrl;
 
     @BeforeClass
     public static void loadFile(){
 	try {
-	    
-	    
-	    xbrl = IOUtils.toString(this.getClass().getResource("artw-20141130.xml"), "UTF-8");
+	    String fpath = "src/test/resources/org/tempeh/artw-20141130.xml";
+	    xbrl = new FileInputStream(new File(fpath));
 	}
 	catch (IOException ioe){
 	    System.out.println(ioe);
