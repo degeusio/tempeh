@@ -3,35 +3,39 @@
   <groupId>tempeh</groupId>
   <artifactId>tempeh</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>tempah</name>
+  <description>XBRL parser for SEC 10-Q/10-K reports</description>
+
+  <properties>
+    <commons-lang3.version>3.3.2</commons-lang3.version>
+    <guava.version>15.0</guava.version>
+    <xerces.version>2.11.0</xerces.version>
+    <junit.version>3.8.1</junit.version>
+  </properties>
   
   <dependencies>
     <dependency>
 	  <groupId>org.apache.commons</groupId>
 	  <artifactId>commons-lang3</artifactId>
-	  <version>3.3.2</version>
+	  <version>${commons-lang3.version}</version>
 	</dependency>
     <dependency>
 	  <groupId>com.google.guava</groupId>
 	  <artifactId>guava</artifactId>
-	  <version>15.0</version>
+	  <version>${guava.version}</version>
 	</dependency>
     <dependency>
 	  <groupId>xerces</groupId>
 	  <artifactId>xercesImpl</artifactId>
-	  <version>2.11.0</version>
-	</dependency>
+	  <version>${xerces.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <source/>
-          <target/>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
