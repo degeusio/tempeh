@@ -14,7 +14,7 @@ public class AppTest extends TestCase {
     public void testBasicFunctionality() {
    
 	String xbrlInstance =
-	    "http://www.sec.gov/Archives/edgar/data/7623/000143774915001434/artw-20141130.xml";
+	    "bhttp://www.sec.gov/Archives/edgar/data/7623/000143774915001434/artw-20141130.xml";
 	
 	final LocalFileCache fileCache = new LocalFileCache("schemas");
 	XbrlFinancialStatementTask task = new XbrlFinancialStatementTask(fileCache, xbrlInstance);

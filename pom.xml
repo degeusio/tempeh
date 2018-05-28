@@ -9,6 +9,11 @@
   <description>XBRL parser for SEC 10-Q/10-K reports</description>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <java.version>1.8</java.version>
     <commons-lang3.version>3.3.2</commons-lang3.version>
     <guava.version>15.0</guava.version>
     <xerces.version>2.11.0</xerces.version>
