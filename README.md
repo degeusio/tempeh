@@ -12,3 +12,8 @@ task.runTask();
 ```
 
 Where xbrlInstance is the URL to a XBRL instance document.
+
+## tempeh 2.0
+
+Currently trying to use modify *tempeh* to work with large batches of SEC documents.
+Testing in progress...
