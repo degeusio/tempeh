@@ -46,7 +46,9 @@ public class FinancialStatementsReport extends XbrlReport {
 	public boolean willHandlePresentation(PresentationLink presentationLink) throws Exception {
 		XbrlRoleType roleType = this.instance.getRoleTypes().get(presentationLink.getRole());
 		if(roleType != null){
-			if(roleType.getRoleCategory() == RoleCategory.STATEMENT && !roleType.isParenthetical() && !roleType.isDetails() && !roleType.isTables()){
+			if(roleType.getRoleCategory() == RoleCategory.STATEMENT && !roleType.isParenthetical() &&
+			   !roleType.isDetails() && !roleType.isTables()){
+
 				//logger.info("Statement - " + presentationLink.getRole());
 				return true;
 			}

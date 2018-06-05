@@ -1,7 +1,13 @@
 package org.tempeh;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
+
+import org.apache.commons.io.FileUtils;
 
 import org.tempeh.cache.IFileCache;
 import org.tempeh.xbrl.PresentationLink;
@@ -19,6 +25,65 @@ public class XbrlFinancialStatementTask {
     public XbrlFinancialStatementTask(IFileCache fileCache, String xbrlInstanceUri){
 	this.fileCache = fileCache;
 	this.xbrlInstanceUri = xbrlInstanceUri;
+    }
+
+    public FileInputStream secFileReader(String filePath) {
+	
+	File file = new File(filePath);
+	FileInputStream fis = null;
+	
+	try {
+	    fis = new FileInputStream(file);
+	     // https://stackoverflow.com/questions/11114665/
+	    return fis;
+	}
+	catch (IOException ioe) {
+	    System.out.println("Unable to open file.");
+	    return fis;
+	}
+    }
+
+    public ByteArrayInputStream secFileReader2 (String filePath){
+
+	ByteArrayInputStream fbytes = null;
+
+	try {
+	    File file = new File(filePath);
+	    fbytes = new ByteArrayInputStream(FileUtils.readFileToByteArray(file));
+	    return fbytes;
+	}
+	catch (Exception e){
+	    System.out.println(e);
+	    return fbytes;
+	}
+    }
+
+    // Run the task without making an HTTP request, SEC report is already downloaded.
+    public void runTaskFromDisk() throws Exception {
+
+	Util util = new Util();
+	XbrlLoader loader = new XbrlLoader(fileCache);
+	XbrlInstance instance = null;
+	ByteArrayInputStream fis = null;
+
+	try{
+	    fis = secFileReader2(this.xbrlInstanceUri);
+	    
+	    if(fis == null){
+		throw new TempehException("Unable to get URL: " + xbrlInstanceUri);
+	    }
+	    
+	    instance = loader.load(new URI(xbrlInstanceUri),
+				   new InputSource(fis));
+	}
+	catch(Exception e){
+	    System.out.println(e);
+	    throw new TempehException("Error parsing xbrl instance: " + xbrlInstanceUri, e);
+	}
+
+	FinancialStatementsReport report = new FinancialStatementsReport(instance);
+	buildFinancialStatements(report, instance);
+	
     }
     
     public void runTask() throws Exception {

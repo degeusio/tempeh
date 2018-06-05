@@ -40,7 +40,8 @@ public class XbrlInstance {
 
 	}
 
-	public IXbrlFact addFact(String contextRef, XbrlTaxonomy xbrlTaxonomy, String id, String decimals, String precision, String unitId, boolean isNil) throws XbrlException{
+	public IXbrlFact addFact(String contextRef, XbrlTaxonomy xbrlTaxonomy, String id, String decimals, String precision,
+				 String unitId, boolean isNil) throws XbrlException{
 
 		if(id == null || id.isEmpty()){
 			//if fact doesn't have id, give it a unique identifier

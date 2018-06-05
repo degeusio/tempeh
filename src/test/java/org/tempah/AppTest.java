@@ -2,6 +2,7 @@ package org.tempeh;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
@@ -21,6 +22,7 @@ public class AppTest {
 
     private static final Logger logger = LogManager.getLogger(AppTest.class);
     private static FileInputStream xbrl;
+    private File resource = new File("src/test/resources/org/tempeh/artw-20141130.xml");
 
     @BeforeClass
     public static void loadFile(){
@@ -52,9 +54,41 @@ public class AppTest {
 	} 
     }
 
+
+    // Issue with SAX parser so we need to verify input file is
+    // working correctly.
+
+    @Test
+    public void testSecFileReader2(){
+
+	String xbrlInstance = resource.getAbsolutePath();
+	final LocalFileCache fileCache = new LocalFileCache("schemas");
+	XbrlFinancialStatementTask task = new XbrlFinancialStatementTask(fileCache, xbrlInstance);
+
+	try {
+	    ByteArrayInputStream bis = task.secFileReader2(xbrlInstance);
+	    assertTrue(bis != null);
+
+	}
+	catch (Exception e){
+	    System.out.println(e);
+	    assertTrue(false);
+	}
+    }
+
     @Test
     public void testBasicFunctionalityNoUrlFetch(){
+	
+	String xbrlInstance = resource.getAbsolutePath();
+	final LocalFileCache fileCache = new LocalFileCache("schemas");
+	XbrlFinancialStatementTask task = new XbrlFinancialStatementTask(fileCache, xbrlInstance);
 
+	try {
+	    task.runTaskFromDisk();
+	}
+	catch (Exception e){
+	    System.out.println(e);
+	}
 	
 	assertTrue(true);
     }
