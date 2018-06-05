@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import org.tempeh.cache.IFileCache;
 import org.tempeh.xbrl.PresentationLink;
@@ -18,7 +20,9 @@ import org.xml.sax.InputSource;
 
 
 public class XbrlFinancialStatementTask {
-    
+
+    private static final Logger logger =
+	LogManager.getLogger(XbrlFinancialStatementTask.class);
     private final IFileCache fileCache;
     private String xbrlInstanceUri;
     
@@ -61,6 +65,8 @@ public class XbrlFinancialStatementTask {
     // Run the task without making an HTTP request, SEC report is already downloaded.
     public void runTaskFromDisk() throws Exception {
 
+	logger.info("Running task from disk.");
+
 	Util util = new Util();
 	XbrlLoader loader = new XbrlLoader(fileCache);
 	XbrlInstance instance = null;
@@ -77,7 +83,7 @@ public class XbrlFinancialStatementTask {
 				   new InputSource(fis));
 	}
 	catch(Exception e){
-	    System.out.println(e);
+	    logger.error("Unable to load file: " + e);
 	    throw new TempehException("Error parsing xbrl instance: " + xbrlInstanceUri, e);
 	}
 

@@ -43,10 +43,10 @@ import org.apache.xerces.parsers.SAXParser;
 
 public class XbrlLoader extends DefaultHandler implements ErrorHandler, XMLEntityResolver {
 
-	private static final int BIG_PRIME = 2039;
-	private final BaseURIResolver baseURIResolver;
-	private final IElementHandler xbrlHandler;
-	private final XMLGrammarPoolImpl grammarPool;
+    private static final int BIG_PRIME = 2039;
+    private final BaseURIResolver baseURIResolver;
+    private final IElementHandler xbrlHandler;
+    private final XMLGrammarPoolImpl grammarPool;
     private final SymbolTable symbolTable;
     private final HashMap<URI, URI> xbrlSchemaRemap; //some SEC XBRL docs contain wrong schema URLs
     private final Queue<URI> additionalDocsToParse = new LinkedList<URI>();
