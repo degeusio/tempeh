@@ -79,7 +79,7 @@ public class XbrlFinancialStatementTask {
 		throw new TempehException("Unable to get URL: " + xbrlInstanceUri);
 	    }
 	    
-	    instance = loader.load(new URI(xbrlInstanceUri),
+	    instance = loader.loadFile(new URI(xbrlInstanceUri),
 				   new InputSource(fis));
 	}
 	catch(Exception e){

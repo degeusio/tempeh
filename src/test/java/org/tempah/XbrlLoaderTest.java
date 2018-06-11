@@ -1,5 +1,8 @@
 package org.tempeh;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.junit.BeforeClass;
@@ -8,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 import org.tempeh.xbrl.XbrlLoader;
+import org.tempeh.cache.LocalFileCache;
 
 
 /* Issue with XbrlFinancialStatementTask.java which needs to be resolved.
@@ -24,15 +28,20 @@ public class XbrlLoaderTest {
 
     private static final Logger logger =
 	LogManager.getLogger(XbrlLoaderTest.class);
+    private static FileInputStream xbrl;
+    private File resource = new File("src/test/resources/org/tempeh/artw-20141130.xml");
 
-
-    
     @Test
-    public void testLoad(){
+    public void testLoadFile(){
 
-       
+	logger.info("Starting xbrl loader test.");
+
+	String xbrlInstance = resource.getAbsolutePath();
+	final LocalFileCache fileCache = new LocalFileCache("schemas");
+
+	XbrlLoader xl = new XbrlLoader();
+	xl.loadFile(); // TODO: needs a direct test here, getting tired
+        
+	assertTrue(true);
     }
-
-    
-
 }

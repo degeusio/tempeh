@@ -102,6 +102,24 @@ public class XbrlLoader extends DefaultHandler implements ErrorHandler, XMLEntit
         }*/
         
 	}
+
+    public XbrlInstance loadFile(URI xbrlInstanceURI, InputSource inputSource)
+	throws IOException, SAXException, XbrlException {
+
+	XbrlInstance instance = new XbrlInstance();
+	Util util = new Util();
+	
+	xbrlHandler.newXbrlDoc(instance);
+	SAXParser sp = new SAXParser(symbolTable, grammarPool);
+	sp.setErrorHandler(this);
+	sp.setEntityResolver(this);
+	sp.setContentHandler(this);
+	sp.parse(inputSource);
+	
+	instance.verifyInstance();
+
+	return instance;
+    }
 	
 	public XbrlInstance load(URI xbrlInstanceURI, InputSource inputSource) throws IOException, SAXException, XbrlException{
 
