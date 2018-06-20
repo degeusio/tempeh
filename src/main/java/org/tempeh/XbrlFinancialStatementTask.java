@@ -62,36 +62,6 @@ public class XbrlFinancialStatementTask {
 	}
     }
 
-    // Run the task without making an HTTP request, SEC report is already downloaded.
-    public void runTaskFromDisk() throws Exception {
-
-	logger.info("Running task from disk.");
-
-	Util util = new Util();
-	XbrlLoader loader = new XbrlLoader(fileCache);
-	XbrlInstance instance = null;
-	ByteArrayInputStream fis = null;
-
-	try{
-	    fis = secFileReader2(this.xbrlInstanceUri);
-	    
-	    if(fis == null){
-		throw new TempehException("Unable to get URL: " + xbrlInstanceUri);
-	    }
-	    
-	    instance = loader.loadFile(new URI(xbrlInstanceUri),
-				   new InputSource(fis));
-	}
-	catch(Exception e){
-	    logger.error("Unable to load file: " + e);
-	    throw new TempehException("Error parsing xbrl instance: " + xbrlInstanceUri, e);
-	}
-
-	FinancialStatementsReport report = new FinancialStatementsReport(instance);
-	buildFinancialStatements(report, instance);
-	
-    }
-    
     public void runTask() throws Exception {
 	
 	Util util = new Util();

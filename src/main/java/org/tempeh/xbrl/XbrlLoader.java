@@ -103,7 +103,7 @@ public class XbrlLoader extends DefaultHandler implements ErrorHandler, XMLEntit
         
 	}
 
-    public XbrlInstance loadFile(URI xbrlInstanceURI, InputSource inputSource)
+    public XbrlInstance loadFile(InputSource inputSource)
 	throws IOException, SAXException, XbrlException {
 
 	XbrlInstance instance = new XbrlInstance();
