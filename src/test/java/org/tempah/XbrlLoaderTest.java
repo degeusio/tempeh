@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 import org.tempeh.xbrl.XbrlLoader;
+import org.tempeh.xbrl.XbrlInstance;
 import org.tempeh.cache.LocalFileCache;
 import org.tempeh.cache.IFileCache;
 import org.tempeh.xbrl.XbrlException;
@@ -46,17 +47,14 @@ public class XbrlLoaderTest {
 
 	try {
 	    File resource = new File("src/test/resources/org/tempeh/artw-20141130.xml");
-	    InputStream res = new FileInputStream(resource);
-	    byte[] bytes = IOUtils.toByteArray(res);
 	    
-	    String xbrlInstance = resource.getAbsolutePath();
 	    final LocalFileCache fileCache = new LocalFileCache("schemas");
 
 	    String thisGuy = FileUtils.readFileToString(resource);
 	    
 	    XbrlLoader xl = new XbrlLoader(fileCache);
 	    InputSource resSax = new InputSource(thisGuy);
-	    xl.loadFile(resSax); // TODO: file is being read now but do something
+	    XbrlInstance instance = xl.loadFile(resSax);
         
 	    assertTrue(true);
 	}

@@ -107,7 +107,28 @@ public class XbrlLoader extends DefaultHandler implements ErrorHandler, XMLEntit
 	throws IOException, SAXException, XbrlException {
 
 	XbrlInstance instance = new XbrlInstance();
+	
+	xbrlHandler.newXbrlDoc(instance);
+	SAXParser sp = new SAXParser(symbolTable, grammarPool);
+	sp.setErrorHandler(this);
+	sp.setEntityResolver(this);
+	sp.setContentHandler(this);
+	sp.parse(inputSource); // TODO: resolve https://stackoverflow.com/questions/3677517
+	
+	//instance.verifyInstance();
+
+	return instance;
+    }
+	
+    public XbrlInstance load(URI xbrlInstanceURI, InputSource inputSource) throws IOException, SAXException, XbrlException{
+
+	XbrlInstance instance = new XbrlInstance();
+	this.uri = xbrlInstanceURI;
+	baseURIResolver.reset();
+	additionalDocsToParse.clear();
 	Util util = new Util();
+	
+	baseURIResolver.addBaseURI(uri);
 	
 	xbrlHandler.newXbrlDoc(instance);
 	SAXParser sp = new SAXParser(symbolTable, grammarPool);
@@ -116,61 +137,39 @@ public class XbrlLoader extends DefaultHandler implements ErrorHandler, XMLEntit
 	sp.setContentHandler(this);
 	sp.parse(inputSource);
 	
+	while(!additionalDocsToParse.isEmpty()){
+	    URI docURI = additionalDocsToParse.remove();
+	    baseURIResolver.addBaseURI(docURI);
+	    //xbrlHandler.startParsingAdditionalDoc(docURI);
+	    HttpURLConnection conn = util.fetchUrl(docURI.toString());
+	    if(conn == null)
+		throw new XbrlException("Unable to get URL: " + docURI.toString());
+	    
+	    try{
+		sp.parse(new InputSource(conn.getInputStream()));
+	    }
+	    finally{
+		conn.disconnect();
+		baseURIResolver.removeBaseURI();
+	    }
+	    //sp.parse(new InputSource(docURI.toString()));
+	}
+	
 	instance.verifyInstance();
-
+	baseURIResolver.removeBaseURI();
+	
 	return instance;
     }
 	
-	public XbrlInstance load(URI xbrlInstanceURI, InputSource inputSource) throws IOException, SAXException, XbrlException{
-
-		XbrlInstance instance = new XbrlInstance();
-		this.uri = xbrlInstanceURI;
-		baseURIResolver.reset();
-		additionalDocsToParse.clear();
-		Util util = new Util();
-
-		baseURIResolver.addBaseURI(uri);
-		
-		xbrlHandler.newXbrlDoc(instance);
-		SAXParser sp = new SAXParser(symbolTable, grammarPool);
-		sp.setErrorHandler(this);
-		sp.setEntityResolver(this);
-		sp.setContentHandler(this);
-		sp.parse(inputSource);
-
-		while(!additionalDocsToParse.isEmpty()){
-			URI docURI = additionalDocsToParse.remove();
-			baseURIResolver.addBaseURI(docURI);
-			//xbrlHandler.startParsingAdditionalDoc(docURI);
-			HttpURLConnection conn = util.fetchUrl(docURI.toString());
-			if(conn == null)
-				throw new XbrlException("Unable to get URL: " + docURI.toString());
-
-			try{
-				sp.parse(new InputSource(conn.getInputStream()));
-			}
-			finally{
-				conn.disconnect();
-				baseURIResolver.removeBaseURI();
-			}
-			//sp.parse(new InputSource(docURI.toString()));
-		}
-
-		instance.verifyInstance();
-		baseURIResolver.removeBaseURI();
-
-		return instance;
-	}
+    @Override
+    public void startDocument() throws SAXException{
 	
-	@Override
-	public void startDocument() throws SAXException{
-	
-	}
-
-	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
-		try{
-			/*
+    }
+    
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
+	try{
+	    /*
 			String schemaLocations = attributes.getValue(XbrlConstants.XMLSchemaInstanceNamespace, "schemaLocation");
 			if(schemaLocations != null){
 				String[] fields = schemaLocations.trim().split("\\s+");
